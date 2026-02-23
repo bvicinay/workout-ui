@@ -1,7 +1,5 @@
 import { useNavigate } from "react-router-dom";
 import {
-  AreaChart,
-  Area,
   XAxis,
   YAxis,
   CartesianGrid,
@@ -36,7 +34,7 @@ export function DashboardHome() {
     }));
 
   const trendData = trends.data.map((d) => ({
-    week: formatWeek(d.week_start),
+    week: `Wk ${formatWeek(d.week_start)}`,
     sets: d.total_sets,
   }));
 
@@ -79,15 +77,9 @@ export function DashboardHome() {
           <LoadingSpinner />
         ) : (
           <ResponsiveContainer width="100%" height={260}>
-            <AreaChart data={trendData}>
-              <defs>
-                <linearGradient id="volGrad" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stopColor="#2563EB" stopOpacity={0.15} />
-                  <stop offset="100%" stopColor="#2563EB" stopOpacity={0} />
-                </linearGradient>
-              </defs>
+            <BarChart data={trendData}>
               <CartesianGrid strokeDasharray="3 3" stroke="#E6EAF0" />
-              <XAxis dataKey="week" tick={{ fontSize: 11, fill: "#475569" }} />
+              <XAxis dataKey="week" tick={{ fontSize: 10, fill: "#475569" }} interval={0} angle={-30} textAnchor="end" height={50} />
               <YAxis tick={{ fontSize: 11, fill: "#475569" }} />
               <Tooltip
                 contentStyle={{
@@ -96,15 +88,14 @@ export function DashboardHome() {
                   border: "1px solid #E6EAF0",
                 }}
               />
-              <Area
-                type="monotone"
+              <Bar
                 dataKey="sets"
-                stroke="#2563EB"
-                strokeWidth={2}
-                fill="url(#volGrad)"
+                fill="#2563EB"
+                radius={[3, 3, 0, 0]}
                 name="Total Sets"
+                fillOpacity={0.8}
               />
-            </AreaChart>
+            </BarChart>
           </ResponsiveContainer>
         )}
       </div>
@@ -118,7 +109,7 @@ export function DashboardHome() {
           {weekly.loading ? (
             <LoadingSpinner />
           ) : (
-            <ResponsiveContainer width="100%" height={220}>
+            <ResponsiveContainer width="100%" height={Math.max(220, thisWeekData.length * 32)}>
               <BarChart data={thisWeekData} layout="vertical" margin={{ left: 10 }}>
                 <CartesianGrid strokeDasharray="3 3" stroke="#E6EAF0" horizontal={false} />
                 <XAxis type="number" tick={{ fontSize: 11, fill: "#475569" }} />
@@ -126,7 +117,8 @@ export function DashboardHome() {
                   type="category"
                   dataKey="muscle_group"
                   tick={{ fontSize: 11, fill: "#475569" }}
-                  width={80}
+                  width={85}
+                  interval={0}
                 />
                 <Tooltip
                   contentStyle={{

@@ -26,3 +26,29 @@ Once logged in, the dashboard displays. Each view represents a different section
 
 
 Ask questions when you are unsure as to how to display, structure or code things. Be thorough and check your work. Setup a way of running and testing the frontend locally, using the backend APIs described.
+
+----
+
+Part 2
+
+Getting the following exception when I run "npm run dev"
+
+amazon-cognito-ident…s.js?v=6828dc34:214 Uncaught ReferenceError: global is not defined
+    at node_modules/buffer/index.js (amazon-cognito-ident…s?v=6828dc34:214:35)
+    at __require2 (chunk-ULBN3QDT.js?v=6828dc34:21:50)
+    at amazon-cognito-ident…?v=6828dc34:2575:29
+
+
+----
+
+Part 3
+
+The color of the muscle groups is too saturated, make it more subtle so it blends in with the rest of the design.
+
+On the Overview "This Week by Muscle Group" chart, the y-axis should show every label/muscle group name
+
+On the Overview "Weekly Training Volume" the values are a rolling sum, make it a discrete sum, showing for week x of the year (label should be week starting). All weekly statistics should follow this principle.
+
+In the Exercises "Strength Progression", also add effecive 1RM.
+
+Add a new section called Reference, where you explain how each metric is calculated and what it means (1RM, ripley, etc, effective vs peak, volume)

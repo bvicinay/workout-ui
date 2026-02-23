@@ -47,7 +47,8 @@ export function ExerciseExplorer() {
 
   const chartData = progression.data.map((p) => ({
     date: p.date,
-    "Est. 1RM": p.exercise_peak_1rm,
+    "Peak 1RM": p.exercise_peak_1rm,
+    "Eff. 1RM": p.exercise_eff_1rm,
     "Max Weight": p.exercise_max_weight,
   }));
 
@@ -164,11 +165,19 @@ export function ExerciseExplorer() {
                       <Legend wrapperStyle={{ fontSize: 12 }} />
                       <Line
                         type="monotone"
-                        dataKey="Est. 1RM"
+                        dataKey="Peak 1RM"
                         stroke="#2563EB"
                         strokeWidth={2}
                         dot={{ r: 3 }}
                         activeDot={{ r: 5 }}
+                      />
+                      <Line
+                        type="monotone"
+                        dataKey="Eff. 1RM"
+                        stroke="#1E3A8A"
+                        strokeWidth={1.5}
+                        strokeDasharray="6 3"
+                        dot={{ r: 2 }}
                       />
                       <Line
                         type="monotone"

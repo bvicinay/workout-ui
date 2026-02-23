@@ -15,15 +15,15 @@ export const MOCKS_ENABLED =
   (!import.meta.env.VITE_API_URL && import.meta.env.DEV);
 
 export const MUSCLE_GROUP_COLORS: Record<string, string> = {
-  Legs: "#3B82F6",
-  Back: "#22C55E",
-  Chest: "#EF4444",
-  Shoulders: "#A855F7",
-  Biceps: "#F97316",
-  Triceps: "#14B8A6",
-  Core: "#EAB308",
-  "Rear Delts": "#EC4899",
-  Forearms: "#6B7280",
+  Legs: "#6B8CBF",
+  Back: "#6BA38A",
+  Chest: "#BF7B7B",
+  Shoulders: "#9B8BBF",
+  Biceps: "#BF9B6B",
+  Triceps: "#6BA3A3",
+  Core: "#B5A86B",
+  "Rear Delts": "#BF8BA3",
+  Forearms: "#8B9298",
 };
 
 export const ALL_MUSCLE_GROUPS = Object.keys(MUSCLE_GROUP_COLORS);
