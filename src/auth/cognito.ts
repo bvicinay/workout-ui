@@ -33,6 +33,8 @@ export function signIn(
       Pool: getUserPool(),
     });
 
+    cognitoUser.setAuthenticationFlowType("USER_PASSWORD_AUTH");
+
     const authDetails = new AuthenticationDetails({
       Username: username,
       Password: password,

@@ -52,3 +52,9 @@ On the Overview "Weekly Training Volume" the values are a rolling sum, make it a
 In the Exercises "Strength Progression", also add effecive 1RM.
 
 Add a new section called Reference, where you explain how each metric is calculated and what it means (1RM, ripley, etc, effective vs peak, volume)
+
+----
+
+Part 4
+
+When logging in I am getting "USER_SRP_AUTH is not enabled for the client.". Why is the client using the USER_SRP_AUTH mechanism, instead of the USER_PASSWORD_AUTH one? Fix this
