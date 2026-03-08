@@ -1,5 +1,6 @@
 # Fitness Dashboard UI Prompt (Tailwind-Ready, Blue Operator)
 
+
 ## Master Prompt (paste into your AI coding agent)
 
 Build a **professional fitness analytics dashboard** with a **serious operator** / **enterprise sport-science** aesthetic (think Datadog/Stripe-style analytics). It should feel like an internal performance tool for a data-driven athlete/coach — **not** a very consumer-oriented fitness app.
