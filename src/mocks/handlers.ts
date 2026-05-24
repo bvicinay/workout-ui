@@ -10,6 +10,8 @@ import {
   weeklyVolume,
   dailyVolume,
   volumeTrends,
+  bodyStats,
+  nutritionData,
 } from "./data";
 
 const BASE = "/api";
@@ -103,5 +105,25 @@ export const handlers = [
       data: volumeTrends,
       count: volumeTrends.length,
     });
+  }),
+
+  http.get(`${BASE}/body-stats`, ({ request }) => {
+    const url = new URL(request.url);
+    const start = url.searchParams.get("start");
+    const end = url.searchParams.get("end");
+    let filtered = bodyStats;
+    if (start) filtered = filtered.filter((s) => s.date >= start);
+    if (end) filtered = filtered.filter((s) => s.date <= end);
+    return HttpResponse.json({ data: filtered, count: filtered.length });
+  }),
+
+  http.get(`${BASE}/nutrition`, ({ request }) => {
+    const url = new URL(request.url);
+    const startDate = url.searchParams.get("start_date");
+    const endDate = url.searchParams.get("end_date");
+    let filtered = nutritionData;
+    if (startDate) filtered = filtered.filter((n) => n.date >= startDate);
+    if (endDate) filtered = filtered.filter((n) => n.date <= endDate);
+    return HttpResponse.json({ data: filtered, count: filtered.length });
   }),
 ];

@@ -100,6 +100,20 @@ export interface VolumeTrend {
   total_sets: number;
 }
 
+export interface BodyStat {
+  date: string;
+  weight_lbs: number;
+}
+
+export interface NutritionEntry {
+  date: string;
+  calories: number | null;
+  protein_g: number | null;
+  carbs_g: number | null;
+  fat_g: number | null;
+  calorie_goal: number | null;
+}
+
 export type MuscleGroup =
   | "Back"
   | "Biceps"

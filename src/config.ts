@@ -11,8 +11,7 @@ export const AUTH_ENABLED =
   !!COGNITO_USER_POOL_ID && !!COGNITO_CLIENT_ID;
 
 export const MOCKS_ENABLED =
-  import.meta.env.VITE_ENABLE_MOCKS === "true" ||
-  (!import.meta.env.VITE_API_URL && import.meta.env.DEV);
+  import.meta.env.VITE_ENABLE_MOCKS === "true";
 
 export const MUSCLE_GROUP_COLORS: Record<string, string> = {
   Legs: "#6B8CBF",

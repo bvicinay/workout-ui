@@ -9,6 +9,8 @@ import { WeeklyVolume } from "./views/WeeklyVolume";
 import { WorkoutLog } from "./views/WorkoutLog";
 import { PersonalRecords } from "./views/PersonalRecords";
 import { Reference } from "./views/Reference";
+import { Weight } from "./views/Weight";
+import { Nutrition } from "./views/Nutrition";
 
 export default function App() {
   return (
@@ -29,6 +31,8 @@ export default function App() {
             <Route path="workouts" element={<WorkoutLog />} />
             <Route path="records" element={<PersonalRecords />} />
             <Route path="reference" element={<Reference />} />
+            <Route path="weight" element={<Weight />} />
+            <Route path="nutrition" element={<Nutrition />} />
           </Route>
         </Routes>
       </BrowserRouter>

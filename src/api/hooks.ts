@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { api } from "./client";
 import type {
   Exercise,
@@ -9,6 +9,8 @@ import type {
   WorkoutDetail,
   WeeklyVolume,
   VolumeTrend,
+  BodyStat,
+  NutritionEntry,
 } from "../types/api";
 
 interface UseApiState<T> {
@@ -18,7 +20,7 @@ interface UseApiState<T> {
 }
 
 function useApi<T>(
-  fetcher: () => Promise<{ data: T[]; count: number }>,
+  fetcher: (signal: AbortSignal) => Promise<{ data: T[]; count: number }>,
   deps: unknown[] = []
 ): UseApiState<T> & { refetch: () => void } {
   const [state, setState] = useState<UseApiState<T>>({
@@ -27,42 +29,58 @@ function useApi<T>(
     error: null,
   });
 
+  // Stable ref to the latest fetcher so the effect doesn't need it as a dep.
+  const fetcherRef = useRef(fetcher);
+  fetcherRef.current = fetcher;
+
   const fetch = useCallback(() => {
+    const controller = new AbortController();
     setState((s) => ({ ...s, loading: true, error: null }));
-    fetcher()
+    fetcherRef.current(controller.signal)
       .then((res) => setState({ data: res.data, loading: false, error: null }))
-      .catch((err) =>
-        setState({ data: [], loading: false, error: err.message })
-      );
+      .catch((err: Error) => {
+        // Ignore aborts — they are intentional (unmount or dep change).
+        if (err.name === "AbortError") return;
+        setState({ data: [], loading: false, error: err.message });
+      });
+    return controller;
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, deps);
 
   useEffect(() => {
-    fetch();
+    const controller = fetch();
+    // Abort in-flight request when the component unmounts or deps change.
+    return () => controller.abort();
   }, [fetch]);
 
-  return { ...state, refetch: fetch };
+  // Expose a manual refetch (no cleanup needed — caller decides lifecycle).
+  const refetch = useCallback(() => {
+    fetch();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [fetch]);
+
+  return { ...state, refetch };
 }
 
 export function useExercises(muscleGroup?: string) {
   return useApi<Exercise>(
-    () => api.getExercises(muscleGroup ? { muscle_group: muscleGroup } : undefined),
+    (signal) => api.getExercises(muscleGroup ? { muscle_group: muscleGroup } : undefined, signal),
     [muscleGroup]
   );
 }
 
 export function usePersonalRecords(muscleGroup?: string) {
   return useApi<PersonalRecord>(
-    () => api.getPersonalRecords(muscleGroup ? { muscle_group: muscleGroup } : undefined),
+    (signal) => api.getPersonalRecords(muscleGroup ? { muscle_group: muscleGroup } : undefined, signal),
     [muscleGroup]
   );
 }
 
 export function useExerciseProgression(exerciseName: string | null) {
   return useApi<ProgressionPoint>(
-    () =>
+    (signal) =>
       exerciseName
-        ? api.getExerciseProgression(exerciseName)
+        ? api.getExerciseProgression(exerciseName, undefined, signal)
         : Promise.resolve({ data: [], count: 0 }),
     [exerciseName]
   );
@@ -70,9 +88,9 @@ export function useExerciseProgression(exerciseName: string | null) {
 
 export function useExerciseHistory(exerciseName: string | null) {
   return useApi<ExerciseSession>(
-    () =>
+    (signal) =>
       exerciseName
-        ? api.getExerciseHistory(exerciseName)
+        ? api.getExerciseHistory(exerciseName, undefined, signal)
         : Promise.resolve({ data: [], count: 0 }),
     [exerciseName]
   );
@@ -85,16 +103,16 @@ export function useWorkouts(params?: {
   end_date?: string;
 }) {
   return useApi<WorkoutSummary>(
-    () => api.getWorkouts(params),
+    (signal) => api.getWorkouts(params, signal),
     [params?.limit, params?.offset, params?.start_date, params?.end_date]
   );
 }
 
 export function useWorkoutDetail(date: string | null) {
   return useApi<WorkoutDetail>(
-    () =>
+    (signal) =>
       date
-        ? api.getWorkoutDetail(date)
+        ? api.getWorkoutDetail(date, signal)
         : Promise.resolve({ data: [], count: 0 }),
     [date]
   );
@@ -102,14 +120,28 @@ export function useWorkoutDetail(date: string | null) {
 
 export function useWeeklyVolume(weeks?: number) {
   return useApi<WeeklyVolume>(
-    () => api.getWeeklyVolume(weeks ? { weeks } : undefined),
+    (signal) => api.getWeeklyVolume(weeks ? { weeks } : undefined, signal),
     [weeks]
   );
 }
 
 export function useVolumeTrends(startDate?: string) {
   return useApi<VolumeTrend>(
-    () => api.getVolumeTrends(startDate ? { start_date: startDate } : undefined),
+    (signal) => api.getVolumeTrends(startDate ? { start_date: startDate } : undefined, signal),
     [startDate]
+  );
+}
+
+export function useBodyStats(params?: { start?: string; end?: string }) {
+  return useApi<BodyStat>(
+    (signal) => api.getBodyStats(params, signal),
+    [params?.start, params?.end]
+  );
+}
+
+export function useNutrition(params?: { start_date?: string; end_date?: string }) {
+  return useApi<NutritionEntry>(
+    (signal) => api.getNutrition(params, signal),
+    [params?.start_date, params?.end_date]
   );
 }

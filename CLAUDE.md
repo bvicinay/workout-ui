@@ -10,21 +10,21 @@ React 18 + TypeScript + Vite frontend for the fitness dashboard.
 
 ## Structure
 ```
-src/api/          # API client (client.ts) + typed hooks for all 10 endpoints
+src/api/          # API client (client.ts) + typed hooks for all 12 endpoints
 src/auth/         # Cognito auth: signIn(), signOut(), getSession(), getCurrentToken()
-src/views/        # Page components (Dashboard, Login, Exercises, etc.)
+src/views/        # Page components (Dashboard, Login, Exercises, Weight, Nutrition, etc.)
 src/components/   # Shared UI components
-src/mocks/        # MSW mock handlers (auto-enabled in dev if no VITE_API_URL)
+src/mocks/        # MSW mock handlers (only active when VITE_ENABLE_MOCKS=true)
 src/config.ts     # Reads all VITE_* env vars
 ```
 
 ## Local Dev
 ```bash
 npm install
-npm run dev       # Vite dev server; proxies /api/* → http://localhost:8000
+npm run dev       # Vite dev server → http://localhost:5173; proxies /api/* → http://localhost:8000
 ```
 Run `python dev_server.py` in `../workout-api` for the full local stack.
-MSW mocks activate automatically if `VITE_API_URL` is not set and `VITE_ENABLE_MOCKS=true`.
+MSW mocks activate only when `VITE_ENABLE_MOCKS=true` is set explicitly. They never auto-enable.
 
 ## Build
 ```bash
@@ -54,7 +54,7 @@ Live URL: `https://fitness.borjavicinay.com`
 | `VITE_API_URL` | (blank — uses Vite proxy) | `https://api.fitness.borjavicinay.com` |
 | `VITE_COGNITO_USER_POOL_ID` | — | `us-east-1_PP35xsBTq` |
 | `VITE_COGNITO_CLIENT_ID` | — | `r9uejpdisusps81o0c14et6qj` |
-| `VITE_ENABLE_MOCKS` | `true` | `false` |
+| `VITE_ENABLE_MOCKS` | `false` (set to `true` only to run without a real API) | `false` |
 
 Production env vars are set in the `WorkoutUiAmplifyStack` CDK stack.
 

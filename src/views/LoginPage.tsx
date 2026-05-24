@@ -1,4 +1,4 @@
-import { useState, type FormEvent } from "react";
+import { useState, useEffect, type FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../auth/AuthContext";
 import { AUTH_ENABLED } from "../config";
@@ -8,14 +8,15 @@ export function LoginPage() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const { signIn, isAuthenticated } = useAuth();
+  const { signIn, isAuthenticated, isLoading } = useAuth();
   const navigate = useNavigate();
 
-  // Already authenticated — redirect
-  if (isAuthenticated) {
-    navigate("/", { replace: true });
-    return null;
-  }
+  // Already authenticated — redirect after render, not during
+  useEffect(() => {
+    if (!isLoading && isAuthenticated) {
+      navigate("/", { replace: true });
+    }
+  }, [isAuthenticated, isLoading, navigate]);
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
@@ -31,8 +32,8 @@ export function LoginPage() {
     try {
       await signIn(username, password);
       navigate("/", { replace: true });
-    } catch (err: any) {
-      setError(err.message || "Authentication failed");
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : "Authentication failed");
     } finally {
       setLoading(false);
     }
