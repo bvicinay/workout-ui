@@ -28,7 +28,7 @@ export function WeeklyVolume() {
   }
 
   const chartData = useMemo(() => {
-    const byWeek = new Map<string, Record<string, any>>();
+    const byWeek = new Map<string, Record<string, string | number>>();
     for (const row of weekly.data) {
       if (!byWeek.has(row.week_start)) {
         byWeek.set(row.week_start, { week_start: row.week_start });
@@ -36,7 +36,7 @@ export function WeeklyVolume() {
       byWeek.get(row.week_start)![row.muscle_group] = row.total_sets;
     }
     return Array.from(byWeek.values()).sort((a, b) =>
-      a.week_start.localeCompare(b.week_start)
+      String(a.week_start).localeCompare(String(b.week_start))
     );
   }, [weekly.data]);
 

@@ -446,7 +446,7 @@ export function Nutrition() {
                 type="monotone"
                 dataKey="calories"
                 stroke="#6B8CBF"
-                strokeWidth={2}
+                strokeWidth={preset === "All" ? 0 : 2}
                 dot={{ r: 3, fill: "#6B8CBF", strokeWidth: 0 }}
                 activeDot={{ r: 5, fill: "#6B8CBF", strokeWidth: 0 }}
                 connectNulls={false}
