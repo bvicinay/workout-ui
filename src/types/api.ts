@@ -124,3 +124,16 @@ export type MuscleGroup =
   | "Rear Delts"
   | "Shoulders"
   | "Triceps";
+
+export interface ProgressPhotoDatesResponse {
+  dates: string[];
+}
+
+export interface ProgressPhotosResponse {
+  date: string;
+  photos: {
+    front?: string;
+    side?: string;
+    back?: string;
+  };
+}

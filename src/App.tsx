@@ -11,6 +11,7 @@ import { PersonalRecords } from "./views/PersonalRecords";
 import { Reference } from "./views/Reference";
 import { Weight } from "./views/Weight";
 import { Nutrition } from "./views/Nutrition";
+import { ProgressPhotos } from "./views/ProgressPhotos";
 
 export default function App() {
   return (
@@ -33,6 +34,7 @@ export default function App() {
             <Route path="reference" element={<Reference />} />
             <Route path="weight" element={<Weight />} />
             <Route path="nutrition" element={<Nutrition />} />
+            <Route path="progress-photos" element={<ProgressPhotos />} />
           </Route>
         </Routes>
       </BrowserRouter>

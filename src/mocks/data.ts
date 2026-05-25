@@ -11,7 +11,45 @@ import type {
   VolumeTrend,
   BodyStat,
   NutritionEntry,
+  ProgressPhotoDatesResponse,
+  ProgressPhotosResponse,
 } from "../types/api";
+
+// Minimal 1x1 grey JPEG, base64-encoded — used as a stand-in image in mocks.
+const MOCK_JPEG =
+  "/9j/4AAQSkZJRgABAQEASABIAAD/2wBDAAgGBgcGBQgHBwcJCQgKDBQNDAsLDBkSEw8U" +
+  "HRofHh0aHBwgJC4nICIsIxwcKDcpLDAxNDQ0Hyc5PTgyPC4zNDL/2wBDAQkJCQwLDBgN" +
+  "DRgyIRwhMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIy" +
+  "MjIyMjL/wAARCAABAAEDASIAAhEBAxEB/8QAFAABAAAAAAAAAAAAAAAAAAAACf/EABQQAQAA" +
+  "AAAAAAAAAAAAAAAAAP/EABQBAQAAAAAAAAAAAAAAAAAAAAD/xAAUEQEAAAAAAAAAAAAAAAAA" +
+  "AAAA/9oADAMBAAIRAxEAPwCwABmX/9k=";
+
+export const progressPhotoDates: ProgressPhotoDatesResponse = {
+  dates: ["2024-01-14", "2024-01-21", "2024-02-04", "2024-02-18", "2024-03-03"],
+};
+
+export const progressPhotosByDate: Record<string, ProgressPhotosResponse> = {
+  "2024-01-14": {
+    date: "2024-01-14",
+    photos: { front: MOCK_JPEG, side: MOCK_JPEG, back: MOCK_JPEG },
+  },
+  "2024-01-21": {
+    date: "2024-01-21",
+    photos: { front: MOCK_JPEG, side: MOCK_JPEG },
+  },
+  "2024-02-04": {
+    date: "2024-02-04",
+    photos: { front: MOCK_JPEG, back: MOCK_JPEG },
+  },
+  "2024-02-18": {
+    date: "2024-02-18",
+    photos: { front: MOCK_JPEG, side: MOCK_JPEG, back: MOCK_JPEG },
+  },
+  "2024-03-03": {
+    date: "2024-03-03",
+    photos: { front: MOCK_JPEG },
+  },
+};
 
 export const exercises: Exercise[] = [
   { exercise_name: "Cable External Rotation", muscle_group: "Rear Delts", sessions: 219, workouts: 219 },

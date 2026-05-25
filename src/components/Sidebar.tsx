@@ -10,6 +10,7 @@ const NAV_ITEMS = [
   { to: "/reference", label: "Reference", icon: "M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" },
   { to: "/weight", label: "Weight", icon: "M3 6l9-3 9 3M3 6v2l9 3 9-3V6M3 8v10l9 3 9-3V8" },
   { to: "/nutrition", label: "Nutrition", icon: "M12 3c-1.2 5.4-5 7.4-5 11a5 5 0 0010 0c0-3.6-3.8-5.6-5-11zM9.5 16.5a2.5 2.5 0 015 0" },
+  { to: "/progress-photos", label: "Progress Photos", icon: "M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9zm10 4a3 3 0 11-6 0 3 3 0 016 0z" },
 ];
 
 export function Sidebar({ onClose }: { onClose?: () => void }) {

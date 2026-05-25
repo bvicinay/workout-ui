@@ -15,6 +15,8 @@ import type {
   VolumeTrend,
   BodyStat,
   NutritionEntry,
+  ProgressPhotoDatesResponse,
+  ProgressPhotosResponse,
 } from "../types/api";
 
 type OnAuthError = () => void;
@@ -66,6 +68,40 @@ async function request<T>(
   }
 
   const response = await fetch(requestUrl, { headers, signal });
+
+  if (!response.ok) {
+    if (response.status === 401) {
+      _onAuthError?.();
+    }
+    const body = (await response.json().catch(() => null)) as ApiError | null;
+    throw new Error(body?.error || `API error: ${response.status}`);
+  }
+
+  return response.json();
+}
+
+/** Like `request` but returns the raw JSON body (for endpoints that don't use ApiResponse<T[]> shape). */
+async function requestRaw<T>(
+  path: string,
+  signal?: AbortSignal
+): Promise<T> {
+  const fullUrl = `${API_BASE_URL}${path}`;
+
+  const headers: Record<string, string> = {
+    "Content-Type": "application/json",
+  };
+
+  if (AUTH_ENABLED) {
+    const token = await getCurrentToken();
+    if (signal?.aborted) {
+      throw new DOMException("Aborted", "AbortError");
+    }
+    if (token) {
+      headers["Authorization"] = `Bearer ${token}`;
+    }
+  }
+
+  const response = await fetch(fullUrl, { headers, signal });
 
   if (!response.ok) {
     if (response.status === 401) {
@@ -173,5 +209,13 @@ export const api = {
     signal?: AbortSignal
   ): Promise<ApiResponse<NutritionEntry>> {
     return request<NutritionEntry>("/nutrition", params as Record<string, string>, signal);
+  },
+
+  getProgressPhotoDates(signal?: AbortSignal): Promise<ProgressPhotoDatesResponse> {
+    return requestRaw<ProgressPhotoDatesResponse>("/progress-photos/dates", signal);
+  },
+
+  getProgressPhotos(date: string, signal?: AbortSignal): Promise<ProgressPhotosResponse> {
+    return requestRaw<ProgressPhotosResponse>(`/progress-photos/${encodeURIComponent(date)}`, signal);
   },
 };

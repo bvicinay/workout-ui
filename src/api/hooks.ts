@@ -11,6 +11,7 @@ import type {
   VolumeTrend,
   BodyStat,
   NutritionEntry,
+  ProgressPhotosResponse,
 } from "../types/api";
 
 interface UseApiState<T> {
@@ -144,4 +145,70 @@ export function useNutrition(params?: { start_date?: string; end_date?: string }
     (signal) => api.getNutrition(params, signal),
     [params?.start_date, params?.end_date]
   );
+}
+
+/** Fetches the list of dates that have progress photos. */
+export function useProgressPhotoDates(): {
+  dates: string[];
+  loading: boolean;
+  error: string | null;
+} {
+  const [dates, setDates] = useState<string[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const controller = new AbortController();
+    setLoading(true);
+    setError(null);
+    api
+      .getProgressPhotoDates(controller.signal)
+      .then((res) => {
+        setDates(res.dates);
+        setLoading(false);
+      })
+      .catch((err: Error) => {
+        if (err.name === "AbortError") return;
+        setError(err.message);
+        setLoading(false);
+      });
+    return () => controller.abort();
+  }, []);
+
+  return { dates, loading, error };
+}
+
+/** Fetches photos for a specific date. Pass null to skip the fetch. */
+export function useProgressPhotos(date: string | null): {
+  photos: ProgressPhotosResponse | null;
+  loading: boolean;
+  error: string | null;
+} {
+  const [photos, setPhotos] = useState<ProgressPhotosResponse | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!date) {
+      setPhotos(null);
+      return;
+    }
+    const controller = new AbortController();
+    setLoading(true);
+    setError(null);
+    api
+      .getProgressPhotos(date, controller.signal)
+      .then((res) => {
+        setPhotos(res);
+        setLoading(false);
+      })
+      .catch((err: Error) => {
+        if (err.name === "AbortError") return;
+        setError(err.message);
+        setLoading(false);
+      });
+    return () => controller.abort();
+  }, [date]);
+
+  return { photos, loading, error };
 }

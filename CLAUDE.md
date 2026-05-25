@@ -59,4 +59,10 @@ Live URL: `https://fitness.borjavicinay.com`
 Production env vars are set in the `WorkoutUiAmplifyStack` CDK stack.
 
 ## Keeping Docs Current
-You are responsible for keeping this `CLAUDE.md` up to date. When you add pages, change API integration points, add env vars, or alter the component structure — update the relevant sections here before finishing the task.
+Keep this file **short and stable**. It is read at the start of every task — bloat costs every future engineer context.
+
+**Belongs here:** architecture overview, file/directory structure, top-level commands (build, test, deploy), env-var summary, key rules and gotchas not obvious from the code, pointers to where deeper detail lives (source files, other docs).
+
+**Does NOT belong here:** full component prop tables, exhaustive command variations, generated names with hashes, large example payloads, anything derivable by reading the code. If you find yourself pasting a code block, link to its source file instead.
+
+When you change something, **prefer editing an existing line over adding a new section**. If a section has grown past ~5 lines of detail, that detail probably belongs in the code or a dedicated file.

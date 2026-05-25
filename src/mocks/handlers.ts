@@ -12,6 +12,8 @@ import {
   volumeTrends,
   bodyStats,
   nutritionData,
+  progressPhotoDates,
+  progressPhotosByDate,
 } from "./data";
 
 const BASE = "/api";
@@ -125,5 +127,21 @@ export const handlers = [
     if (startDate) filtered = filtered.filter((n) => n.date >= startDate);
     if (endDate) filtered = filtered.filter((n) => n.date <= endDate);
     return HttpResponse.json({ data: filtered, count: filtered.length });
+  }),
+
+  http.get(`${BASE}/progress-photos/dates`, () => {
+    return HttpResponse.json(progressPhotoDates);
+  }),
+
+  http.get(`${BASE}/progress-photos/:date`, ({ params }) => {
+    const date = params.date as string;
+    const entry = progressPhotosByDate[date];
+    if (!entry) {
+      return HttpResponse.json(
+        { error: `No progress photos found for date '${date}'` },
+        { status: 404 }
+      );
+    }
+    return HttpResponse.json(entry);
   }),
 ];
